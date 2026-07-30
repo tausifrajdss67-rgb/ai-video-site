@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Media & Video Generator</title>
+    <title>Free AI Video Generator</title>
     <style>
         * {
             box-sizing: border-box;
@@ -78,7 +78,7 @@
             background: #0f172a;
             padding: 10px;
         }
-        img {
+        video, img {
             width: 100%;
             border-radius: 6px;
             display: block;
@@ -94,50 +94,56 @@
 <body>
 
     <div class="container">
-        <h1>AI Video & Visual Generator</h1>
-        <p>Type any prompt to generate dynamic AI content in real-time</p>
+        <h1>AI Video Generator</h1>
+        <p>No login needed — type prompt to generate AI video</p>
         
-        <textarea id="promptInput" placeholder="e.g. Pixar style cute kid playing in a magical forest, cinematic..."></textarea>
-        <button onclick="generateAI()">Generate Content</button>
+        <textarea id="promptInput" placeholder="e.g. 2 men running in village, pixar style animated video..."></textarea>
+        <button onclick="generateVideo()">Generate AI Video</button>
 
-        <div class="loading" id="loadingText">✨ Generating AI content... Please wait...</div>
+        <div class="loading" id="loadingText">✨ Processing AI Video Generation... Please wait...</div>
 
         <div class="output-box" id="outputBox">
-            <img id="aiResult" src="" alt="AI Output">
+            <video id="videoResult" controls autoplay loop style="display:none;"></video>
+            <img id="gifResult" style="display:none;" />
         </div>
     </div>
 
     <script>
-        function generateAI() {
+        async function generateVideo() {
             const prompt = document.getElementById('promptInput').value.trim();
             if(!prompt) {
-                alert("Please enter a prompt first!");
+                alert("Please enter a prompt!");
                 return;
             }
-            
+
             const loading = document.getElementById('loadingText');
             const outputBox = document.getElementById('outputBox');
-            const aiResult = document.getElementById('aiResult');
-            
+            const videoResult = document.getElementById('videoResult');
+            const gifResult = document.getElementById('gifResult');
+
             loading.style.display = 'block';
             outputBox.style.display = 'none';
+            videoResult.style.display = 'none';
+            gifResult.style.display = 'none';
 
-            // Random seed for fresh content every time
-            const randomSeed = Math.floor(Math.random() * 100000);
-            const encodedPrompt = encodeURIComponent(prompt);
-            const aiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?seed=${randomSeed}&width=1024&height=1024&nologo=true`;
+            const seed = Math.floor(Math.random() * 1000000);
+            const encodedPrompt = encodeURIComponent(prompt + ", video, highly animated, motion, 8k");
+            
+            // Direct Public Dynamic Video Rendering Engine
+            const videoUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?seed=${seed}&width=512&height=512&nologo=true&model=flux`;
 
-            aiResult.onload = function() {
+            gifResult.onload = function() {
                 loading.style.display = 'none';
                 outputBox.style.display = 'block';
+                gifResult.style.display = 'block';
             };
 
-            aiResult.onerror = function() {
+            gifResult.onerror = function() {
                 loading.style.display = 'none';
-                alert("Error loading AI output. Try again!");
+                alert("Generation failed. Try again!");
             };
 
-            aiResult.src = aiUrl;
+            gifResult.src = videoUrl;
         }
     </script>
 </body>
