@@ -1,43 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>AI Video Generator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #38bdf8;
+        }
+        p {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+            resize: none;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        textarea:focus {
+            border-color: #38bdf8;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .output-box {
+            margin-top: 25px;
+            display: none;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #334155;
+            background: #0f172a;
+            padding: 10px;
+        }
+        video {
+            width: 100%;
+            border-radius: 6px;
+        }
+        .loading {
+            display: none;
+            margin-top: 15px;
+            color: #38bdf8;
+            font-size: 14px;
+        }
+    </style>
 </head>
-<body style="background:black; color:white; text-align:center;">
+<body>
 
-  <h1>AI Video Generator 🚀</h1>
+    <div class="container">
+        <h1>AI Video Generator</h1>
+        <p>Type your prompt below to generate an AI video</p>
+        
+        <textarea id="promptInput" placeholder="e.g. A futuristic city in sunset, cinematic 8k..."></textarea>
+        <button onclick="generateVideo()">Generate Video</button>
 
-  <input id="prompt" placeholder="Enter your idea..." style="padding:10px; width:250px;">
-  <br><br>
+        <div class="loading" id="loadingText">✨ Generating AI Video... Please wait...</div>
 
-  <button onclick="generateVideo()" style="padding:10px;">Generate</button>
+        <div class="output-box" id="outputBox">
+            <video id="videoResult" controls autoplay loop>
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
 
-  <p id="status"></p>
+    <script>
+        function generateVideo() {
+            const prompt = document.getElementById('promptInput').value;
+            if(!prompt) {
+                alert("Please enter a prompt first!");
+                return;
+            }
+            
+            const loading = document.getElementById('loadingText');
+            const output = document.getElementById('outputBox');
+            
+            loading.style.display = 'block';
+            output.style.display = 'none';
 
-  <script>
-    async function generateVideo() {
-      document.getElementById("status").innerText = "Generating... ⏳";
-
-      const prompt = document.getElementById("prompt").value;
-
-      const res = await fetch("https://api.replicate.com/v1/predictions", {
-        method: "POST",
-        headers: {
-          "Authorization": "Token YOUR_API_KEY",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          version: "MODEL_VERSION_ID",
-          input: {
-            prompt: prompt
-          }
-        })
-      });
-
-      document.getElementById("status").innerText = "Done ✅ Check console";
-      console.log(await res.json());
-    }
-  </script>
-
+            // Demo delay to simulate AI processing
+            setTimeout(() => {
+                loading.style.display = 'none';
+                output.style.display = 'block';
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
