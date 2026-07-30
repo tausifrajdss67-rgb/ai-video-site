@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Video Generator</title>
+</head>
+<body style="background:black; color:white; text-align:center;">
+
+  <h1>AI Video Generator 🚀</h1>
+
+  <input id="prompt" placeholder="Enter your idea..." style="padding:10px; width:250px;">
+  <br><br>
+
+  <button onclick="generateVideo()" style="padding:10px;">Generate</button>
+
+  <p id="status"></p>
+
+  <script>
+    async function generateVideo() {
+      document.getElementById("status").innerText = "Generating... ⏳";
+
+      const prompt = document.getElementById("prompt").value;
+
+      const res = await fetch("https://api.replicate.com/v1/predictions", {
+        method: "POST",
+        headers: {
+          "Authorization": "Token YOUR_API_KEY",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          version: "MODEL_VERSION_ID",
+          input: {
+            prompt: prompt
+          }
+        })
+      });
+
+      document.getElementById("status").innerText = "Done ✅ Check console";
+      console.log(await res.json());
+    }
+  </script>
+
+</body>
+</html>
