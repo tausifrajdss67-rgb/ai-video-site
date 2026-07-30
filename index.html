@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Generator</title>
+    <title>AI Media & Video Generator</title>
     <style>
         * {
             box-sizing: border-box;
@@ -78,9 +78,10 @@
             background: #0f172a;
             padding: 10px;
         }
-        video {
+        img {
             width: 100%;
             border-radius: 6px;
+            display: block;
         }
         .loading {
             display: none;
@@ -93,41 +94,50 @@
 <body>
 
     <div class="container">
-        <h1>AI Video Generator</h1>
-        <p>Type your prompt below to generate an AI video</p>
+        <h1>AI Video & Visual Generator</h1>
+        <p>Type any prompt to generate dynamic AI content in real-time</p>
         
-        <textarea id="promptInput" placeholder="e.g. A futuristic city in sunset, cinematic 8k..."></textarea>
-        <button onclick="generateVideo()">Generate Video</button>
+        <textarea id="promptInput" placeholder="e.g. Pixar style cute kid playing in a magical forest, cinematic..."></textarea>
+        <button onclick="generateAI()">Generate Content</button>
 
-        <div class="loading" id="loadingText">✨ Generating AI Video... Please wait...</div>
+        <div class="loading" id="loadingText">✨ Generating AI content... Please wait...</div>
 
         <div class="output-box" id="outputBox">
-            <video id="videoResult" controls autoplay loop>
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <img id="aiResult" src="" alt="AI Output">
         </div>
     </div>
 
     <script>
-        function generateVideo() {
-            const prompt = document.getElementById('promptInput').value;
+        function generateAI() {
+            const prompt = document.getElementById('promptInput').value.trim();
             if(!prompt) {
                 alert("Please enter a prompt first!");
                 return;
             }
             
             const loading = document.getElementById('loadingText');
-            const output = document.getElementById('outputBox');
+            const outputBox = document.getElementById('outputBox');
+            const aiResult = document.getElementById('aiResult');
             
             loading.style.display = 'block';
-            output.style.display = 'none';
+            outputBox.style.display = 'none';
 
-            // Demo delay to simulate AI processing
-            setTimeout(() => {
+            // Random seed for fresh content every time
+            const randomSeed = Math.floor(Math.random() * 100000);
+            const encodedPrompt = encodeURIComponent(prompt);
+            const aiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?seed=${randomSeed}&width=1024&height=1024&nologo=true`;
+
+            aiResult.onload = function() {
                 loading.style.display = 'none';
-                output.style.display = 'block';
-            }, 3000);
+                outputBox.style.display = 'block';
+            };
+
+            aiResult.onerror = function() {
+                loading.style.display = 'none';
+                alert("Error loading AI output. Try again!");
+            };
+
+            aiResult.src = aiUrl;
         }
     </script>
 </body>
